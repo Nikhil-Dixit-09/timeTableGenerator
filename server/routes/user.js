@@ -1,0 +1,10 @@
+const express=require('express');
+const router=express.Router();
+const userController=require('../controllers/user_controller');
+const { use } = require('bcrypt/promises');
+router.post('/signin',userController.signin);
+router.post('/signup',userController.signup);
+router.post('/addEntry',userController.addEntry);
+router.post('/getInfo',userController.getInfo);
+router.post('/delEntry',userController.delEntry);
+module.exports=router;

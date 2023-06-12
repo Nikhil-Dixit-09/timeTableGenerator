@@ -1,0 +1,47 @@
+.appbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 5px;
+    background-color: aliceblue;
+    align-items: center;
+}
+.who button{
+    background-color: #00d09c;; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    margin: 10px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+}
+.name{
+    font-size: 37.5px;
+    font-family: Roboto,system-ui;
+    color: var(--text130);
+    letter-spacing: .3px;
+    font-weight: 300;
+    -webkit-font-smoothing: auto;
+    margin: 0;
+}
+.user{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    text-align: center;
+}
+.logout{
+    margin-right: 20px;
+}
+.user .nameApp{
+    height: 15px;
+    font-size: 37.5px;
+    font-family: Roboto,system-ui;
+    color: var(--text130);
+    letter-spacing: .3px;
+    font-weight: 200;
+}
