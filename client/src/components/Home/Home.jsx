@@ -725,7 +725,78 @@ const Home = () => {
   console.log(fri);
   console.log(myMap);
   console.log(labs);
-
+  
+  const rowsmon = monday.map((row, rowIndex) => (
+    <tr key={rowIndex}>
+      <td>{which.get(rowIndex)}</td>
+      {row.map((cell, cellIndex) => (
+        cell === 'null' ? (
+          <td key={cellIndex} style={{ minWidth: '125px' }}>{}</td>
+        ) : (
+          <td key={cellIndex} style={{ minWidth: '125px' }}>{cell}</td>
+        )
+      ))}
+    </tr>
+  ));
+  const rowstue = tue.map((row, rowIndex) => (
+    <tr key={rowIndex}>
+      <td>{which.get(rowIndex)}</td>
+      {row.map((cell, cellIndex) => (
+        cell === 'null' ? (
+          <td key={cellIndex} style={{ minWidth: '125px' }}>{}</td>
+        ) : (
+          <td key={cellIndex} style={{ minWidth: '125px' }}>{cell}</td>
+        )
+      ))}
+    </tr>
+  ));
+  const rowswed = wed.map((row, rowIndex) => (
+    <tr key={rowIndex}>
+      <td>{which.get(rowIndex)}</td>
+      {row.map((cell, cellIndex) => (
+        cell === 'null' ? (
+          <td key={cellIndex} style={{ minWidth: '125px' }}>{}</td>
+        ) : (
+          <td key={cellIndex} style={{ minWidth: '125px' }}>{cell}</td>
+        )
+      ))}
+    </tr>
+  ));
+  const rowsthurs = thurs.map((row, rowIndex) => (
+    <tr key={rowIndex}>
+      <td>{which.get(rowIndex)}</td>
+      {row.map((cell, cellIndex) => (
+        cell === 'null' ? (
+          <td key={cellIndex} style={{ minWidth: '125px' }}>{}</td>
+        ) : (
+          <td key={cellIndex} style={{ minWidth: '125px' }}>{cell}</td>
+        )
+      ))}
+    </tr>
+  ));
+  const rowsfri = fri.map((row, rowIndex) => (
+    <tr key={rowIndex}>
+      <td>{which.get(rowIndex)}</td>
+      {row.map((cell, cellIndex) => (
+        cell === 'null' ? (
+          <td key={cellIndex} style={{ minWidth: '125px' }}>{}</td>
+        ) : (
+          <td key={cellIndex} style={{ minWidth: '125px' }}>{cell}</td>
+        )
+      ))}
+    </tr>
+  ));
+  const timeSlotsRow = [
+    '',
+    '09-10 AM',
+    '10-11 AM',
+    '11-12 PM',
+    '12-01 PM',
+    '02-03 PM',
+    '03-04 PM',
+    '04-05 PM',
+    '05-06 PM',
+  ];
   return (
     <div id='content'>
         {
@@ -748,6 +819,61 @@ const Home = () => {
           user!==null &&
           <button>Generate</button>
         }
+    <div className='day'>Monday</div>
+    <table>
+      <tbody>
+        <tr>
+          {timeSlotsRow.map((timeSlot, index) => (
+            <th key={index}>{timeSlot}</th>
+          ))}
+        </tr>
+        {rowsmon}
+      </tbody>
+    </table>
+    <div className='day'>Tuesday</div>
+    <table>
+      <tbody>
+        <tr>
+          {timeSlotsRow.map((timeSlot, index) => (
+            <th key={index}>{timeSlot}</th>
+          ))}
+        </tr>
+        {rowstue}
+      </tbody>
+    </table>
+    <div className='day'>Wednesday</div>
+    <table>
+      <tbody>
+        <tr>
+          {timeSlotsRow.map((timeSlot, index) => (
+            <th key={index}>{timeSlot}</th>
+          ))}
+        </tr>
+        {rowswed}
+      </tbody>
+    </table>
+    <div className='day'>Thursday</div>
+    <table>
+      <tbody>
+        <tr>
+          {timeSlotsRow.map((timeSlot, index) => (
+            <th key={index}>{timeSlot}</th>
+          ))}
+        </tr>
+        {rowsthurs}
+      </tbody>
+    </table>
+    <div className='day'>Friday</div>
+    <table>
+      <tbody>
+        <tr>
+          {timeSlotsRow.map((timeSlot, index) => (
+            <th key={index}>{timeSlot}</th>
+          ))}
+        </tr>
+        {rowsfri}
+      </tbody>
+    </table>
     </div>
   )
 }

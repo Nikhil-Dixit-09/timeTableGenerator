@@ -1,6 +1,13 @@
 #target{
     color: coral;
 }   
+table {
+    border-collapse: collapse;
+  }
+  td {
+    border: 1px solid black;
+    padding: 8px;
+  }
 @media print{
     #content * {
         display: none;
@@ -9,3 +16,36 @@
         display: block;
     }
 }
+.day{
+    font-family: Roboto,system-ui;
+    font-size: 35px;
+    text-align: center;
+    padding: 17px;
+}
+.day {
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  table {
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  td {
+    text-align: center;
+  }
+  
+  td:first-child {
+    font-weight: bold;
+  }
