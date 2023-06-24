@@ -14,7 +14,7 @@ const Entry = (props) => {
         <div className='info'>Teacher: {props.teacher}</div>
         <div className='info'>Subject: {props.subject}</div>
         <div className='info'>Class: {props.class}</div>
-        <div className='info'>Maximum classes: {props.maxi}</div>
+        <div className='info'>Credits: {props.maxi}</div>
         <div className='info room'>Room Number: {props?.room}</div>
         <div className='info del'><img src={del} alt='loading..' onClick={deleteMe}></img></div>
     </div>

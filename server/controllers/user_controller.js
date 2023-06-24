@@ -39,8 +39,8 @@ module.exports.signup=async function(req,res){
 }
 module.exports.addEntry=async function(req,res){
     try{
-        console.log(req.body);
-        console.log('eneeeee')
+        // console.log(req.body);
+        // console.log('eneeeee')
         const user=await User.findOne({email:req.body.email});
         var obj={};
         obj.teacher=req.body.teacher;
@@ -79,7 +79,49 @@ module.exports.delEntry=async function(req,res){
                 break;
             }
         }   
-        console.log(user.entries);
+        // console.log(user.entries);
+        user.save();
+        return res.status(200).json({data:user});
+    }catch(err){
+        console.log(err);
+    }
+}
+module.exports.addFixed=async function(req,res){
+    try{
+        const user=await User.findOne({email:req.body.email});
+        var obj={};
+        obj.day=req.body.day;
+        obj.teacher=req.body.teacher;
+        obj.subject=req.body.subject;
+        obj.class=req.body.class;
+        obj.room=req.body.room;
+        obj.timeslot=req.body.timeslot;
+        user.fixed.push(obj);
+        user.save();
+        return res.status(200).json({data:user});
+
+    }catch(err){
+        console.log(err);
+    }
+}
+module.exports.delFixed=async function(req,res){
+    try{
+        console.log('hii','aaaaaaaaaa');
+        const user=await User.findOne({email:req.body.email});
+        var obj={};
+        obj.day=req.body.day;
+        obj.teacher=req.body.teacher;
+        obj.subject=req.body.subject;
+        obj.class=req.body.class;
+        obj.room=req.body.room;
+        obj.timeslot=req.body.timeslot;
+        for(let i=0;i<user.fixed.length;i++){
+            if(user.fixed[i].teacher==obj.teacher&&user.fixed[i].subject==obj.subject&&user.fixed[i].class==obj.class&&user.fixed[i].day==obj.day&&user.fixed[i].timeslot==obj.timeslot&&user.fixed[i].room==obj.room){
+                user.fixed.splice(i,1);
+                break;
+            }
+        }   
+        // console.log(user.entries);
         user.save();
         return res.status(200).json({data:user});
     }catch(err){

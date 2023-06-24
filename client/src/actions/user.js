@@ -29,3 +29,21 @@ export const delEntry=(formData)=>async(dispatch)=>{
         console.log(err);
     }
 }
+export const addFixed=(formData)=>async(dispatch)=>{
+    try{
+        const {data}=await api.addFixed(formData);
+        console.log(data);
+        dispatch({type:'SET_USER',payload:data.data});
+    }catch(err){
+        console.log(err);
+    }
+}
+export const delFixed=(formData)=>async(dispatch)=>{
+    try{
+        const {data}=await api.delFixed(formData);
+        // console.log(data);
+        dispatch({type:'SET_USER',payload:data.data});
+    }catch(err){
+        console.log(err);
+    }
+}

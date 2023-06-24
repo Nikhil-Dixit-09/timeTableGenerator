@@ -13,3 +13,5 @@ export const signup=(formData)=>API.post(`/user/signup`,formData);
 export const addEntry=(formData)=>API.post(`/user/addEntry`,formData);
 export const getInfo=(formData)=>API.post(`/user/getInfo`,formData);
 export const delEntry=(formData)=>API.post('/user/delEntry',formData);
+export const addFixed=(formData)=>API.post('/user/addFixed',formData);
+export const delFixed=(formData)=>API.post('/user/delFixed',formData);

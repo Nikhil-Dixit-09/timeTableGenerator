@@ -7,4 +7,6 @@ router.post('/signup',userController.signup);
 router.post('/addEntry',userController.addEntry);
 router.post('/getInfo',userController.getInfo);
 router.post('/delEntry',userController.delEntry);
+router.post('/addFixed',userController.addFixed);
+router.post('/delFixed',userController.delFixed);
 module.exports=router;

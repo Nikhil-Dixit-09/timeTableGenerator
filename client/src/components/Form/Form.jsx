@@ -35,7 +35,7 @@ const Form = () => {
             <div className='inp'>Class: </div>
             <input className='input' type='text' onChange={(e)=>setData({...formData,class:e.target.value})}></input>
 
-            <div className='inp'>Classes per week: </div>
+            <div className='inp'>Credits:  </div>
             <input className='input' type='number' onChange={(e)=>setData({...formData,maxi:e.target.value})}></input>
 
             <div className='inp'>Room Number: </div>

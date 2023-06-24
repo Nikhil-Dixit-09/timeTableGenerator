@@ -18,12 +18,12 @@ table {
 }
 .day{
     font-family: Roboto,system-ui;
-    font-size: 35px;
+    font-size: 39.5px;
     text-align: center;
     padding: 17px;
 }
 .day {
-    font-weight: bold;
+    font-weight: 400;
     margin-top: 20px;
   }
   
@@ -49,3 +49,25 @@ table {
   td:first-child {
     font-weight: bold;
   }
+  
+.containe{
+    display: flex;
+    flex-direction: row;
+    font-family: Roboto,system-ui;
+}
+.in{
+    margin-left: 15px;
+    
+}
+.inpt{
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    max-width: 120px;
+}
+select{
+  width: 120px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
