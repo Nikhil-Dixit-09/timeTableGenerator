@@ -47,3 +47,20 @@ export const delFixed=(formData)=>async(dispatch)=>{
         console.log(err);
     }
 }
+export const addPairing=(formData)=>async(dispatch)=>{
+    try{
+        const {data}=await api.addPairing(formData);
+        dispatch({type:'SET_USER',payload:data.data});
+    }catch(err){
+        console.log(err);
+    }
+}
+export const delPairing=(formData)=>async(dispatch)=>{
+    try{
+        const {data}=await api.delPairing(formData);
+        // console.log(data);
+        dispatch({type:'SET_USER',payload:data.data});
+    }catch(err){
+        console.log(err);
+    }
+}

@@ -19,6 +19,12 @@ const AppBar = () => {
       const gotohome = () => {
         navigate("/");
       }
+      console.log(user);
+      useEffect(()=>{
+        if(user===null){
+          navigate('/auth');
+        }
+      },[user]);
       const logout = () => {
         dispatch({ type: 'LOGOUT' })
         dispatch({type:'LOG_OUT'})

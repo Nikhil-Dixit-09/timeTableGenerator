@@ -4,10 +4,10 @@ import del from '../../assets/icons8-delete-50.png'
 import { useDispatch } from 'react-redux'
 import { delFixed } from '../../actions/user'
 const Fixed = (props) => {
-    const dispath=useDispatch();
+    const dispatch=useDispatch();
     const deleteMe=()=>{
         console.log(props);
-        dispath(delFixed(props));
+        dispatch(delFixed(props));
     }
   return (
     <div>

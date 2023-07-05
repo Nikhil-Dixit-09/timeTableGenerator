@@ -16,3 +16,45 @@
 .room{
     width: 175px;
 }
+
+.entry {
+    display: flex;
+    flex-direction: row;
+    font-family: Roboto, system-ui;
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .info {
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 30px;
+    width: 160px;
+    display: flex;
+    align-items: center;
+    font-weight: 550;
+  }
+  
+  .del {
+    cursor: pointer;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .del img {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .room {
+    width: 175px;
+  }
+  
+  /* Optional: Hover effect for entries */
+  .entry:hover {
+    background-color: #e0e0e0;
+  }

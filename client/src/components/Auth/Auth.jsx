@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import {signin,signup} from '../../actions/auth'
 import { useDispatch } from 'react-redux';
@@ -10,6 +10,12 @@ const Auth = () => {
     const [form, setForm] = useState(initialState);
     const navigate = useNavigate();
     const dispatch=useDispatch();
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    useEffect(()=>{
+        if(user!==null){
+            navigate('/');
+        }
+    },[user])
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     }

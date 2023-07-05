@@ -15,3 +15,5 @@ export const getInfo=(formData)=>API.post(`/user/getInfo`,formData);
 export const delEntry=(formData)=>API.post('/user/delEntry',formData);
 export const addFixed=(formData)=>API.post('/user/addFixed',formData);
 export const delFixed=(formData)=>API.post('/user/delFixed',formData);
+export const addPairing=(formData)=>API.post('/user/addPairing',formData);
+export const delPairing=(formData)=>API.post('/user/delPairing',formData);

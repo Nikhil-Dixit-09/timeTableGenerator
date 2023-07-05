@@ -11,3 +11,46 @@
     margin-right: 10px;
     margin-left: 10px;
 }
+
+.form {
+    font-family: Roboto, system-ui;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  
+  .inp {
+    margin-left: 15px;
+    font-weight: 550;
+  }
+  
+  .input {
+    margin-bottom: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  button[type='submit'] {
+    
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  button[type='submit']:hover {
+    background-color: #45a049;
+  }
+  
+  button[type='submit']:focus {
+    outline: none;
+  }
