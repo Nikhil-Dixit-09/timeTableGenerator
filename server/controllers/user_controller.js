@@ -128,3 +128,42 @@ module.exports.delFixed=async function(req,res){
         console.log(err);
     }
 }
+module.exports.addPairing=async function(req,res){
+    try{
+        const user=await User.findOne({email:req.body.email});
+        var obj={};
+        obj.teacher=req.body.teacher;
+        obj.subject=req.body.subject;
+        obj.class1=req.body.class1;
+        obj.class2=req.body.class2;
+        obj.class3=req.body.class3;
+        user.pairing.push(obj);
+        user.save();
+        return res.status(200).json({data:user});
+    }catch(err){
+        console.log(err);
+    }
+}
+module.exports.delPairing=async function(req,res){
+    try{
+        
+        const user=await User.findOne({email:req.body.email});
+        var obj={};
+        obj.teacher=req.body.teacher;
+        obj.subject=req.body.subject;
+        obj.class1=req.body.class1;
+        obj.class2=req.body.class2;
+        obj.class3=req.body.class3;
+        for(let i=0;i<user.pairing.length;i++){
+            if(user.pairing[i].teacher==obj.teacher&&user.pairing[i].subject==obj.subject&&user.pairing[i].class1==obj.class1&&user.pairing[i].class2==obj.class2&&user.pairing[i].class3==obj.class3){
+                user.pairing.splice(i,1);
+                break;
+            }
+        }   
+        // console.log(user.entries);
+        user.save();
+        return res.status(200).json({data:user});
+    }catch(err){
+        console.log(err);
+    }
+}

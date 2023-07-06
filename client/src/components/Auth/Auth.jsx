@@ -33,7 +33,7 @@ const Auth = () => {
           }
     }
     return (
-        <div>
+        <div className='auth-container'>
 
             <form className='myForm' action="" autoComplete='off' onSubmit={handleSubmit}>
                 <div className='flex'>

@@ -9,4 +9,6 @@ router.post('/getInfo',userController.getInfo);
 router.post('/delEntry',userController.delEntry);
 router.post('/addFixed',userController.addFixed);
 router.post('/delFixed',userController.delFixed);
+router.post('/addPairing',userController.addPairing);
+router.post('/delPairing',userController.delPairing);
 module.exports=router;

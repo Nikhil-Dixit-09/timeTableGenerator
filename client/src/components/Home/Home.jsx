@@ -11,11 +11,15 @@ import Form from '../Form/Form'
 import Fixed from '../Fixed/Fixed'
 import Entry from '../Entry/Entry'
 import Pairing from '../Pairing/Pairing'
+import { useNavigate } from 'react-router-dom';
+import { read, utils, writeFile } from 'xlsx';
+import logo from '../../assets/logo.jpg'
 // import $ from 'jquery'
 
 const Home = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate=useNavigate();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
   // console.log(user);
   useEffect(() => {
@@ -29,7 +33,11 @@ const Home = () => {
     setArr([...arr, n]);
   }
 
-
+  useEffect(()=>{
+    if(user===null){
+      navigate('/auth');
+    }
+  },[user])
 
   useEffect(() => {
     if (user !== null) {
@@ -73,11 +81,36 @@ const Home = () => {
     e.preventDefault();
     dispatch(addPairing(pairing));
   }
+  const [data,setData]=useState([]);
+  const [backup,setBackup]=useState([]);
   const [generate, setGenerate] = useState(0);
-  const handleGenerate = () => {
-    setGenerate(0);
-    setGenerate(1);
+  const [pdf,setPdf]=useState(0);
+  
+  const handleFile=(e)=>{
+    console.log(e);
+    const files = e.target.files;
+    if(files.length){
+      const excel=files[0];
+      const reader=new FileReader();
+      reader.onload=(e)=>{
+        console.log(e);
+        const wb=read(e.target.result);
+        console.log(wb);
+        const sheets=wb.SheetNames;
+        console.log(sheets);
+        if(sheets.length){
+          const rows = utils.sheet_to_json(wb.Sheets[sheets[0]]);
+          setData(rows);
+          setBackup(rows);
+          console.log(rows);
+        }
+      }
+      reader.readAsArrayBuffer(excel);
+    }
+    
+    
   }
+  
   function generateRandomArray(n) {
     const array = [];
 
@@ -103,17 +136,73 @@ const Home = () => {
   let labs = new Map();
   //since labs are of 2 hours we need a special track of them
   let list = [];
-  //list is the list of all the classes, and we will sort it so that there is no irregularity based on the data entered by the user
-  for (let i = 0; i < myUser.entries.length; i++) {
-    let teacher = myUser.entries[i].teacher;
+  //list is the list of all the classes, and we will sort it so that there is no irregularity based on the data entered by the user4
+  if(data.length===0){
+    myMap.clear();
+    hold.clear();
+    labs.clear();
+    which.clear();
+    list.splice(0,list.length);
+    for (let i = 0; i < myUser.entries.length; i++) {
+      let teacher = myUser.entries[i].teacher;
+      //accessing the teacher from the entries
+      let subject = myUser.entries[i].subject;
+      //accessing the subject from the entries
+      let clas = myUser.entries[i].class;
+      //accessing the class from the enetries
+      let maxi = myUser.entries[i].maxi;
+      //accessing the maxi from the entries
+      let room = myUser.entries[i].room;
+      //accessing the room from the entries
+      let see = subject.slice(-3);
+      //checking if it is a lab or not
+      if (see === 'LAB') {
+        if (labs.has(clas)) {
+          let v = labs.get(clas);
+          v.push([subject, teacher, room]);
+          labs.set(clas, v);
+        } else {
+          let v = [[subject, teacher, room]];
+          labs.set(clas, v);
+        }
+        continue;
+      }
+      //inserting the class dependencies
+      // console.log(teacher,subject,clas,maxi);
+      if (myMap.has(clas)) {
+        let v = myMap.get(clas);
+        let p = [teacher, subject, maxi, room];
+        v.push(p);
+        myMap.set(clas, v);
+      } else {
+        let v = [[teacher, subject, maxi, room]];
+        myMap.set(clas, v);
+        list.push(clas);
+      }
+      //inserting the class dependecies
+    }
+    list.sort();
+  
+    for (var i = 0; i < list.length; i++) {
+      which.set(i, list[i]);
+      hold.set(list[i], i);
+    }
+  }else{
+    myMap.clear();
+    hold.clear();
+    labs.clear();
+    which.clear();
+    list.splice(0,list.length);
+    for(let i=0;i<data.length;i++){
+      let teacher =data[i].Teacher;
     //accessing the teacher from the entries
-    let subject = myUser.entries[i].subject;
+    let subject = data[i].Subject;
     //accessing the subject from the entries
-    let clas = myUser.entries[i].class;
+    let clas = data[i].Class;
     //accessing the class from the enetries
-    let maxi = myUser.entries[i].maxi;
+    let maxi =data[i].Credits;
     //accessing the maxi from the entries
-    let room = myUser.entries[i].room;
+    let room = data[i].Room_Number;
     //accessing the room from the entries
     let see = subject.slice(-3);
     //checking if it is a lab or not
@@ -140,14 +229,15 @@ const Home = () => {
       myMap.set(clas, v);
       list.push(clas);
     }
-    //inserting the class dependecies
-  }
-  list.sort();
+    }
+    list.sort();
 
-  for (var i = 0; i < list.length; i++) {
-    which.set(i, list[i]);
-    hold.set(list[i], i);
+    for (var i = 0; i < list.length; i++) {
+      which.set(i, list[i]);
+      hold.set(list[i], i);
+    }
   }
+  
   console.log(which);
   console.log(myMap);
   console.log(labs);
@@ -218,6 +308,37 @@ const Home = () => {
     for (let j = 0; j < 8; j++) {
 
       fri[i][j] = 'null';
+    }
+  }
+  const handleGenerate = () => {
+    setData([]);
+    if(generate===0){
+      setGenerate(1);
+      setPdf(1);
+    }else{
+      setGenerate(0);
+      setPdf(1);
+      setTimeout(() => {
+        setGenerate(1);
+      }, 300)
+    }
+  }
+  const handelFileSubmit=(e)=>{
+    
+    e.preventDefault();
+    setData(backup);
+    console.log(backup);
+    console.log(data);
+
+    if(generate===0){
+      setGenerate(1);
+      setPdf(1);
+    }else{
+      setGenerate(0);
+      setPdf(1);
+      setTimeout(() => {
+        setGenerate(1);
+      }, 300)
     }
   }
   for (let i = 0; i < myUser?.fixed?.length; i++) {
@@ -342,6 +463,11 @@ const Home = () => {
       }
     }
   }
+  function randomNumber(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
   for (let i = 0; i < myUser?.pairing?.length; i++) {
     console.log(myUser.pairing[i]);
     let s = [];
@@ -354,7 +480,7 @@ const Home = () => {
     let v = myMap.get(clas);
     let room = '';
     let count = 0;
-    for (let j = 0; j < v.length; j++) {
+    for (let j = 0; j < v?.length; j++) {
       if (v[j][1] === myUser.pairing[i].subject && v[j][0] === myUser.pairing[i].teacher) {
         room = v[j][3];
         count = v[j][2];
@@ -365,7 +491,7 @@ const Home = () => {
     }
     let clas2 = s[1];
     let v2 = myMap.get(clas2);
-    for (let j = 0; j < v2.length; j++) {
+    for (let j = 0; j < v2?.length; j++) {
       if (v2[j][1] === myUser.pairing[i].subject && v2[j][0] === myUser.pairing[i].teacher) {
         v2.splice(j, 1);
         myMap.set(clas2, v2);
@@ -377,7 +503,7 @@ const Home = () => {
     let ind2 = hold.get(s[1]);
     console.log(ind1, ind2);
     console.log(count, room);
-    for (let j = 1; j <= 5; j++) {
+    for (let j = 1; j <= 5&&ind1!==undefined&&ind2!==undefined; j++) {
       let day = j;
       if (day === 1) {
 
@@ -473,11 +599,7 @@ const Home = () => {
     }
   }
   console.log(myMap, labs);
-  function randomNumber(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+  
   console.log(monday);
 
   let hori = new Map();
@@ -512,6 +634,13 @@ const Home = () => {
     let rooms = new Map();
     //rooms is a map which will take care of the rooms where the classes is going on, room which is already alloted in a 
     //particular time slot should not be alloted to any other class that day
+    for(let i=0;i<which.size;i++){
+      if(monday[i][j]!==null){
+        let infos=monday[i][j].split(',');
+        vis.set(infos[0],1);
+        rooms.set(infos[2],1);
+      }
+    }
     for (let i = 0; i < which.size; i++) {
       if (monday[i][j] !== 'null') {
         continue;
@@ -531,14 +660,16 @@ const Home = () => {
         console.log(ind1);
         //for random ness we are generating the random arr so that we can generate multiple time tables 
         let arr = generateRandomArray(l.length);
+        let copii=JSON.parse(JSON.stringify(arr));
+        console.log(copii);
         let see = -1;
         for (let k = 0; k < arr.length; k++) {
 
-          let r = l[k][2];
+          let r = l[arr[k]][2];
           if (rooms.has(r)) {
             continue;
           } else {
-            ind1 = k;
+            ind1 = arr[k];
             //we will allocate a value to the monday as shown.
             monday[i][j] = l[ind1][1] + ',' + l[ind1][0] + ',' + l[ind1][2];
             monday[i][j + 1] = l[ind1][1] + ',' + l[ind1][0] + ',' + l[ind1][2];
@@ -668,6 +799,13 @@ const Home = () => {
   for (let j = 1; j <= 6; j++) {
     let vis = new Map();
     let rooms = new Map();
+    for(let i=0;i<which.size;i++){
+      if(tue[i][j]!==null){
+        let infos=tue[i][j].split(',');
+        vis.set(infos[0],1);
+        rooms.set(infos[2],1);
+      }
+    }
     for (let i = 0; i < which.size; i++) {
       if (tue[i][j] !== 'null') {
         continue;
@@ -687,11 +825,11 @@ const Home = () => {
         let see = -1;
         for (let k = 0; k < arr.length; k++) {
           // console.log(l);
-          let r = l[k][2];
+          let r = l[arr[k]][2];
           if (rooms.has(r)) {
             continue;
           } else {
-            ind1 = k;
+            ind1 = arr[k];
             tue[i][j] = l[ind1][1] + ',' + l[ind1][0] + ',' + l[ind1][2];
             tue[i][j + 1] = l[ind1][1] + ',' + l[ind1][0] + ',' + l[ind1][2];
             rooms.set(l[ind1][2], 1);
@@ -790,6 +928,13 @@ const Home = () => {
   for (let j = 1; j <= 6; j++) {
     let vis = new Map();
     let rooms = new Map();
+    for(let i=0;i<which.size;i++){
+      if(wed[i][j]!==null){
+        let infos=wed[i][j].split(',');
+        vis.set(infos[0],1);
+        rooms.set(infos[2],1);
+      }
+    }
     for (let i = 0; i < which.size; i++) {
       if (wed[i][j] !== 'null') {
         continue;
@@ -809,11 +954,11 @@ const Home = () => {
         let see = -1;
         for (let k = 0; k < arr.length; k++) {
           // console.log(l);
-          let r = l[k][2];
+          let r = l[arr[k]][2];
           if (rooms.has(r)) {
             continue;
           } else {
-            ind1 = k;
+            ind1 = arr[k];
             wed[i][j] = l[ind1][1] + ',' + l[ind1][0] + ',' + l[ind1][2];
             wed[i][j + 1] = l[ind1][1] + ',' + l[ind1][0] + ',' + l[ind1][2];
             rooms.set(l[ind1][2], 1);
@@ -914,6 +1059,13 @@ const Home = () => {
   for (let j = 1; j <= 6; j++) {
     let vis = new Map();
     let rooms = new Map();
+    for(let i=0;i<which.size;i++){
+      if(thurs[i][j]!==null){
+        let infos=thurs[i][j].split(',');
+        vis.set(infos[0],1);
+        rooms.set(infos[2],1);
+      }
+    }
     for (let i = 0; i < which.size; i++) {
       if (thurs[i][j] !== 'null') {
         continue;
@@ -933,11 +1085,11 @@ const Home = () => {
         let see = -1;
         for (let k = 0; k < arr.length; k++) {
           // console.log(l);
-          let r = l[k][2];
+          let r = l[arr[k]][2];
           if (rooms.has(r)) {
             continue;
           } else {
-            ind1 = k;
+            ind1 = arr[k];
             thurs[i][j] = l[ind1][1] + ',' + l[ind1][0] + ',' + l[ind1][2];
             thurs[i][j + 1] = l[ind1][1] + ',' + l[ind1][0] + ',' + l[ind1][2];
             rooms.set(l[ind1][2], 1);
@@ -1039,6 +1191,13 @@ const Home = () => {
   for (let j = 1; j <= 6; j++) {
     let vis = new Map();
     let rooms = new Map();
+    for(let i=0;i<which.size;i++){
+      if(fri[i][j]!==null){
+        let infos=fri[i][j].split(',');
+        vis.set(infos[0],1);
+        rooms.set(infos[2],1);
+      }
+    }
     for (let i = 0; i < which.size; i++) {
       if (fri[i][j] !== 'null') {
         continue;
@@ -1058,11 +1217,11 @@ const Home = () => {
         let see = -1;
         for (let k = 0; k < arr.length; k++) {
           // console.log(l);
-          let r = l[k][2];
+          let r = l[arr[k]][2];
           if (rooms.has(r)) {
             continue;
           } else {
-            ind1 = k;
+            ind1 = arr[k];
             fri[i][j] = l[ind1][1] + ',' + l[ind1][0] + ',' + l[ind1][2];
             fri[i][j + 1] = l[ind1][1] + ',' + l[ind1][0] + ',' + l[ind1][2];
             rooms.set(l[ind1][2], 1);
@@ -1137,6 +1296,7 @@ const Home = () => {
   console.log(fri);
   console.log(myMap);
   console.log(labs);
+
   myMap.forEach((value, key) => {
     if (value.length === 0) {
       console.log(key, value, 'hii');
@@ -1268,6 +1428,7 @@ const Home = () => {
     }
   });
   console.log(myMap);
+  
   const rowsmon = monday.map((row, rowIndex) => (
     <tr key={rowIndex}>
       <td>{which.get(rowIndex)}</td>
@@ -1339,6 +1500,17 @@ const Home = () => {
     '04-05 PM',
     '05-06 PM',
   ];
+  const generatePdf=()=>{
+    console.log('print');  
+  let printContents = document.getElementById('targetpdf').innerHTML;
+  // console.log(printContents);
+  let originalContents = document.body.innerHTML;
+  document.body.innerHTML = printContents;
+  window.print();
+  
+ document.body.innerHTML = originalContents; 
+ window.location.reload();
+  }
   return (
     <div id='content'>
       {
@@ -1357,8 +1529,13 @@ const Home = () => {
           </div>
         ))
       }
-
-
+      <div className='center'>OR</div>
+      <div className='infos'>Upload excel file</div>
+      <form onSubmit={handelFileSubmit}>
+        <input type='file' id='fileinput' onChange={handleFile} required></input>
+        <button type='submit' className='generate color'>Generate</button>
+      </form>
+      
       <div className='infos'>Add fixed details: </div>
       {
         (user !== null && myUser.length !== 0) &&
@@ -1443,13 +1620,25 @@ const Home = () => {
         </div>
 
       </form>
+      <div>
       {
         user !== null &&
-        <button className='generate' onClick={handleGenerate}>Generate</button>
+          <button className='generate' onClick={handleGenerate}>Generate</button>
       }
       {
+        pdf===1 &&
+        <button className='pdf' onClick={generatePdf}>Generate PDF</button>
+      }
+      </div>
+      
+      {
         generate === 1 &&
-        <div>
+        
+        <div id='targetpdf'>
+          <div className='logo'>
+          <img src={logo} alt="" />
+          </div>
+          
           <div className='day'>Monday</div>
           <table>
             <tbody>

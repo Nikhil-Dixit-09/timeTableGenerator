@@ -5,9 +5,10 @@
     padding: 5px;
     background-color: aliceblue;
     align-items: center;
+    margin-bottom: 20px;
 }
 .who button{
-    background-color: #00d09c;; /* Green */
+    background-color: #00b3b3; /* Green */
     border: none;
     color: white;
     padding: 15px 32px;
@@ -45,3 +46,6 @@
     letter-spacing: .3px;
     font-weight: 200;
 }
+
+
+
